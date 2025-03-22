@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Box() {
+function Box({ value }: { value: number }) {
     return (
         <div className="box">
-            15
+            {value}
         </div>
     );
 }
