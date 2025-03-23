@@ -16,15 +16,12 @@ p {
 
 .frame {
   box-sizing: content-box;
-  height: calc(var(--box-height) * 4);
-  width: calc(var(--box-width) * 4);
-  border: var(--border-size) solid black;
+  border-color: black;
+  border-style: solid;
   margin: 20px auto;
 }
 
 .row {
-  height: var(--box-height);
-  width: calc(var(--box-width) * 4);
   margin: 0 auto;
 }
 
@@ -33,11 +30,9 @@ p {
   font-weight: bold;
   font-size: var(--font-size);
   text-align: center;
-  height: var(--box-height);
-  width: var(--box-width);
   box-sizing: border-box;
-  border: var(--border-size) solid black;
-  line-height: calc(var(--box-height) - 10px);
+  border-color: black;
+  border-style: solid;
   float: left;
 }
 
