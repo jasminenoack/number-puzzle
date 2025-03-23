@@ -16,8 +16,12 @@ export class PuzzleState {
     state: number[][];
     size: number;
     private solvedState: number[][];
+    lastMoveTo: number[] | null
 
-    constructor(puzzleState: number[][] | null = null, size: number | null = null
+    constructor(
+        puzzleState: number[][] | null = null,
+        size: number | null = null,
+        lastMoveTo: number[] | null = null
     ) {
         if (!puzzleState && !size) {
             throw new Error("Either puzzle state or size must be provided");
@@ -34,6 +38,7 @@ export class PuzzleState {
         this.solvedState = this.generatePuzzleBySize(this.size);
 
         this.state = puzzleState || fisherYates(this.solvedState);
+        this.lastMoveTo = lastMoveTo;
     }
 
     generatePuzzleBySize(size: number) {
@@ -88,20 +93,24 @@ export class PuzzleState {
         return actions;
     }
 
-    findZero() {
-        // returns the index of the zero tile
+    findLocation(value: number) {
+        // returns the location of the value
         for (let i = 0; i < this.state.length; i++) {
             for (let j = 0; j < this.state[i].length; j++) {
-                if (this.state[i][j] === 0) {
+                if (this.state[i][j] === value) {
                     return [i, j];
                 }
             }
         }
-        throw new Error("No zero tile found");
+        throw new Error("No value found");
+    }
+
+    findZero() {
+        // returns the location of the 0
+        return this.findLocation(0);
     }
 
     move(action: string) {
-        console.log("Moving", action);
         // moves the tile in the given direction
         const zeroIndex = this.findZero();
         const rowIndex = zeroIndex[0];
@@ -134,6 +143,26 @@ export class PuzzleState {
             default:
                 throw new Error("Invalid action");
         }
-        return new PuzzleState(newState);
+        return new PuzzleState(newState, null, [rowIndex, colIndex]);
+    }
+
+    simplePuzzleScore() {
+        /*
+        * This is a simple heuristic that counts how well the puzzle is actually doing
+        * It counts the distace of each tile from it's goal location. 
+        * The lower the score the closer to the goal.
+        */
+        var score = 0;
+        const solvedVersion = new PuzzleState(this.solvedState, this.size);
+        for (let currentRow = 0; currentRow < this.state.length; currentRow++) {
+            for (let currentColumn = 0; currentColumn < this.state[currentRow].length; currentColumn++) {
+                const value = this.state[currentRow][currentColumn];
+                const correctCoordinates = solvedVersion.findLocation(value);
+                const correctRow = correctCoordinates[0];
+                const correctColumn = correctCoordinates[1];
+                score += Math.abs(currentRow - correctRow) + Math.abs(currentColumn - correctColumn);
+            }
+        }
+        return score;
     }
 }

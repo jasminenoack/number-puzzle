@@ -548,5 +548,149 @@ describe("PuzzleState", () => {
                 [13, 0, 14, 15]
             ]);
         });
+
+        it('sets lastMoveTo', () => {
+            const puzzle = new PuzzleState([
+                [1, 2, 3, 4],
+                [5, 6, 7, 8],
+                [9, 10, 11, 12],
+                [13, 14, 0, 15]
+            ]);
+            const newPuzzle = puzzle.move("right");
+            expect(newPuzzle.lastMoveTo).toEqual([3, 2]);
+        }
+        );
+    });
+
+    describe("Find Location", () => {
+        it("should find 6 in 1,1", () => {
+            const puzzle = new PuzzleState([
+                [1, 2, 3, 4],
+                [5, 6, 7, 8],
+                [9, 10, 11, 12],
+                [13, 14, 15, 0]
+            ]);
+            expect(puzzle.findLocation(6)).toEqual([1, 1]);
+        });
+
+        it('should find 0 in 3,3', () => {
+            const puzzle = new PuzzleState([
+                [1, 2, 3, 4],
+                [5, 6, 7, 8],
+                [9, 10, 11, 12],
+                [13, 14, 15, 0]
+            ]);
+            expect(puzzle.findLocation(0)).toEqual([3, 3]);
+        });
+
+        it('should find 1 in 0,0', () => {
+            const puzzle = new PuzzleState([
+                [1, 2, 3, 4],
+                [5, 6, 7, 8],
+                [9, 10, 11, 12],
+                [13, 14, 15, 0]
+            ]);
+            expect(puzzle.findLocation(1)).toEqual([0, 0]);
+        });
+    });
+
+    describe("simple puzzle score", () => {
+        it("should return 0 for solved puzzle", () => {
+            const puzzle = new PuzzleState(PUZZLE_SOLVED);
+            expect(puzzle.simplePuzzleScore()).toEqual(0);
+        });
+
+        it("should return 2 for one move away", () => {
+            const puzzle = new PuzzleState([
+                [1, 2, 3, 4],
+                [5, 6, 7, 8],
+                [9, 10, 11, 0],
+                [13, 14, 15, 12]
+            ]);
+            expect(puzzle.simplePuzzleScore()).toEqual(2);
+        });
+
+        it("should return 6 for one column wrong", () => {
+            const puzzle = new PuzzleState([
+                [1, 2, 3, 0],
+                [5, 6, 7, 4],
+                [9, 10, 11, 8],
+                [13, 14, 15, 12]
+            ]);
+            expect(puzzle.simplePuzzleScore()).toEqual(6);
+        });
+
+        it('should return 6 for one row wrong', () => {
+            const puzzle = new PuzzleState([
+                [1, 2, 3, 4],
+                [5, 6, 7, 8],
+                [9, 10, 11, 12],
+                [0, 13, 14, 15]
+            ]);
+            expect(puzzle.simplePuzzleScore()).toEqual(6);
+        }
+        );
+
+        it('should handle columns and rows wrong', () => {
+            const puzzle = new PuzzleState([
+                [1, 2, 3, 4],
+                [5, 6, 7, 8],
+                [0, 10, 11, 12],
+                [13, 14, 15, 9]
+            ]);
+            expect(puzzle.simplePuzzleScore()).toEqual(8);
+        }
+        );
+
+        //     it("should return 1 for 1 move", () => {
+        //         const puzzle = new PuzzleState([
+        //             [1, 2, 3, 4],
+        //             [5, 6, 7, 8],
+        //             [9, 10, 11, 12],
+        //             [13, 14, 0, 15]
+        //         ]);
+        //         expect(puzzle.simplePuzzleScore()).toEqual(1);
+        //     });
+
+        //     it("should return 2 for 2 moves", () => {
+        //         const puzzle = new PuzzleState([
+        //             [1, 2, 3, 4],
+        //             [5, 6, 7, 8],
+        //             [9, 10, 0, 12],
+        //             [13, 14, 11, 15]
+        //         ]);
+        //         expect(puzzle.simplePuzzleScore()).toEqual(2);
+        //     });
+
+        //     it("should return 3 for 3 moves", () => {
+        //         const puzzle = new PuzzleState([
+        //             [1, 2, 3, 4],
+        //             [5, 6, 7, 8],
+        //             [9, 0, 11, 12],
+        //             [13, 14, 10, 15]
+        //         ]);
+        //         expect(puzzle.simplePuzzleScore()).toEqual(3);
+        //     });
+
+        //     it("should return 4 for 4 moves", () => {
+        //         const puzzle = new PuzzleState([
+        //             [1, 2, 3, 4],
+        //             [5, 6, 7, 8],
+        //             [0, 9, 11, 12],
+        //             [13, 14, 10, 15]
+        //         ]);
+        //         expect(puzzle.simplePuzzleScore()).toEqual(4);
+        //     });
+
+        //     it("should return 5 for 5 moves", () => {
+        //         const puzzle = new PuzzleState([
+        //             [1, 2, 3, 4],
+        //             [5, 6, 7, 8],
+        //             [9, 11, 0, 12],
+        //             [13, 14, 10, 15]
+        //         ]);
+        //         expect(puzzle.simplePuzzleScore()).toEqual(
+        //             5
+        //         );
     });
 });
