@@ -37,9 +37,10 @@ export class Node {
 type Stats = {
     nodesSeen: number;
     nodesProcessed: number;
-    nodesThrownAway: number;
+    nodesNotProcessed: number;
     pathLength: number;
     maxDepth: number;
+    nodesThrownAway: number;
 }
 
 export class Frontier {
@@ -49,6 +50,7 @@ export class Frontier {
     solution: Node | null = null;
     stats: Stats | null = null;
     solved: boolean = false;
+    matchingNodeCount: number = 0;
 
     constructor(start: PuzzleState, holder: HolderInterface) {
         this.holder = holder;
@@ -59,6 +61,7 @@ export class Frontier {
     addElementToHolder(element: Node) {
         const hashKey = element.createHashKey();
         if (this.seen.has(hashKey)) {
+            this.matchingNodeCount++;
             return;
         }
         this.seen.add(hashKey);
@@ -101,7 +104,7 @@ export class Frontier {
             while (!this.solved) {
                 i++;
                 this.processNode();
-                if (i > 100) {
+                if (i > 1000) {
                     break;
                 }
             }
@@ -109,10 +112,25 @@ export class Frontier {
             console.log(e);
         }
         if (this.solution) {
-            console.log("Solution found", this.processNode.length);
+            console.log("Solution found", this.processed.length);
+        } else {
+            console.log("No solution found", this.processed.length);
+        }
+
+        var maxPathLength = 0;
+        this.processed.forEach((node) => {
+            if (node.depth > maxPathLength) {
+                maxPathLength = node.depth;
+            }
+        })
+
+        this.stats = {
+            nodesSeen: this.seen.size,
+            nodesProcessed: this.processed.length,
+            nodesNotProcessed: this.holder.size(),
+            pathLength: this.solution ? this.solution.depth : 0,
+            maxDepth: maxPathLength,
+            nodesThrownAway: this.matchingNodeCount
         }
     }
-
-    // check if solved 
-
 }

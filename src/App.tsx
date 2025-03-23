@@ -5,7 +5,11 @@ import { PuzzleState } from './algo/puzzle/puzzle';
 import { Stack } from './algo/frontiers/holders/stack';
 import { Frontier } from './algo/frontiers/frontier';
 
-const puzzle = new PuzzleState(null, 3);
+const puzzle = new PuzzleState([
+  [0, 1, 2],
+  [4, 5, 3],
+  [7, 8, 6]
+], 3);
 const stackFrontier = new Frontier(puzzle, new Stack());
 stackFrontier.process();
 

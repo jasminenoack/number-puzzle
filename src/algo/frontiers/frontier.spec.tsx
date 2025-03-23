@@ -88,6 +88,7 @@ describe("Frontier", () => {
             expect(frontier.holder.size()).toEqual(2);
             frontier.addElementToHolder(node);
             expect(frontier.holder.size()).toEqual(2);
+            expect(frontier.matchingNodeCount).toEqual(1);
         });
     })
 
@@ -160,7 +161,7 @@ describe("Frontier", () => {
     })
 
     describe("processPuzzle", () => {
-        xit("should stop if solved", () => {
+        it("should stop if solved", () => {
             var frontier = new Frontier(new PuzzleState(PUZZLE_SOLVED), new Stack());
             frontier.process();
             expect(frontier.solution).toBeTruthy();
@@ -168,23 +169,36 @@ describe("Frontier", () => {
             expect(solution_data).toEqual(PUZZLE_SOLVED);
         });
 
-        xit("should find the solution", () => {
-            var frontier = new Frontier(new PuzzleState(TEST_PUZZLE), new Stack());
+        it("should find the solution", () => {
+            var frontier = new Frontier(new PuzzleState([
+                [0, 1, 2],
+                [4, 5, 3],
+                [7, 8, 6]
+            ]), new Stack());
             frontier.process();
             expect(frontier.solution).toBeTruthy();
             var solution_data = frontier.solution?.puzzleState.state;
-            expect(solution_data).toEqual(PUZZLE_SOLVED);
+            expect(solution_data).toEqual([
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 0]
+            ]);
         });
 
-        xit("should build stats", () => {
-            var frontier = new Frontier(new PuzzleState(TEST_PUZZLE), new Stack());
+        it("should build stats", () => {
+            var frontier = new Frontier(new PuzzleState([
+                [0, 1, 2],
+                [4, 5, 3],
+                [7, 8, 6]
+            ]), new Stack());
             frontier.process();
             expect(frontier.stats).toEqual({
-                nodesSeen: 4,
-                nodesProcessed: 4,
-                nodesThrownOut: 0,
-                pathLength: 4,
-                maxDepth: 4,
+                nodesSeen: 272,
+                nodesProcessed: 157,
+                nodesNotProcessed: 115,
+                pathLength: 157,
+                maxDepth: 157,
+                nodesThrownAway: 159
             });
         });
 
