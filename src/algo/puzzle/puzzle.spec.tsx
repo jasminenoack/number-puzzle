@@ -2,7 +2,7 @@ import { PuzzleState, PUZZLE_SOLVED } from "./puzzle";
 describe("PuzzleState", () => {
     describe("create", () => {
         it("should set up a new shuffled puzzle", () => {
-            const puzzle = new PuzzleState();
+            const puzzle = new PuzzleState(null, 4);
             expect(puzzle.state).not.toEqual(PUZZLE_SOLVED);
         });
 
@@ -10,11 +10,48 @@ describe("PuzzleState", () => {
             const puzzle = new PuzzleState(PUZZLE_SOLVED);
             expect(puzzle.state).toEqual(PUZZLE_SOLVED);
         });
+
+        it('should create an appropriate size puzzle', () => {
+            const puzzle = new PuzzleState(null, 3);
+            expect(puzzle.size).toEqual(3);
+            const state = puzzle.state;
+            expect(state.flat().sort()).toEqual([0, 1, 2, 3, 4, 5, 6, 7, 8]);
+            expect(state.length).toEqual(3);
+            expect(state[0].length).toEqual(3);
+        });
     });
+
+    describe("generatePuzzleBySize", () => {
+        it("should generate a 4x4 puzzle", () => {
+            const puzzle = new PuzzleState(null, 4);
+            const generated = puzzle.generatePuzzleBySize(4);
+            expect(generated).toEqual(PUZZLE_SOLVED);
+        });
+
+        it("should generate a 3x3 puzzle", () => {
+            const puzzle = new PuzzleState(null, 4);
+            const generated = puzzle.generatePuzzleBySize(3);
+            expect(generated).toEqual([
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 0]
+            ]);
+        });
+
+        it("should generate a 2x2 puzzle", () => {
+            const puzzle = new PuzzleState(null, 4);
+            const generated = puzzle.generatePuzzleBySize(2);
+            expect(generated).toEqual([
+                [1, 2],
+                [3, 0]
+            ]);
+        });
+    }
+    );
 
     describe("solved", () => {
         it("should not be solved after creation", () => {
-            const puzzle = new PuzzleState();
+            const puzzle = new PuzzleState(null, 4);
             expect(puzzle.solved()).toBe(false);
         });
 
@@ -22,6 +59,18 @@ describe("PuzzleState", () => {
             const puzzle = new PuzzleState(PUZZLE_SOLVED);
             expect(puzzle.solved()).toBe(true);
         });
+
+        it("should be able to tell if another size is solved", () => {
+            const puzzle = new PuzzleState(
+                [
+                    [1, 2, 3],
+                    [4, 5, 6],
+                    [7, 8, 0]
+                ]
+                , 3);
+            expect(puzzle.solved()).toBe(true);
+        }
+        );
     });
 
     describe("actions", () => {
@@ -185,6 +234,46 @@ describe("PuzzleState", () => {
             ]);
             expect(puzzle.actions()).toEqual(["right", "down"]);
         });
+
+        it("knows actions for 3X3 in 0,0", () => {
+            const puzzle = new PuzzleState([
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8]
+            ], 3);
+            expect(puzzle.actions()).toEqual(["up", "left"]);
+        }
+        );
+
+        it("knows actions for 3X3 in 0, 2", () => {
+            const puzzle = new PuzzleState([
+                [1, 2, 0],
+                [3, 4, 5],
+                [6, 7, 8]
+            ], 3);
+            expect(puzzle.actions()).toEqual(["up", "right"]);
+        }
+        );
+
+        it("knows actions for 3X3 in 2, 0", () => {
+            const puzzle = new PuzzleState([
+                [1, 2, 3],
+                [4, 5, 6],
+                [0, 7, 8]
+            ], 3);
+            expect(puzzle.actions()).toEqual(["left", "down"]);
+        }
+        );
+
+        it("knows actions for 3X3 in 2, 2", () => {
+            const puzzle = new PuzzleState([
+                [1, 2, 3],
+                [4, 5, 6],
+                [7, 8, 0]
+            ], 3);
+            expect(puzzle.actions()).toEqual(["right", "down"]);
+        }
+        );
 
 
     })

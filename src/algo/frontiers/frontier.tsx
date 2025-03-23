@@ -58,7 +58,6 @@ export class Frontier {
 
     addElementToHolder(element: Node) {
         const hashKey = element.createHashKey();
-        console.log(hashKey)
         if (this.seen.has(hashKey)) {
             return;
         }
@@ -77,7 +76,6 @@ export class Frontier {
     }
 
     public processNode() {
-        console.log("Processing node");
         if (this.holder.isEmpty()) {
             throw new Error("No nodes to process");
         }
@@ -102,11 +100,10 @@ export class Frontier {
         while (!this.solved) {
             i++;
             this.processNode();
-            if (i > 10) {
+            if (i > 100) {
                 break;
             }
         }
-        console.log("BROKE")
     }
 
     // check if solved 

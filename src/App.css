@@ -5,6 +5,13 @@
   --font-size: 20px;
 }
 
+p {
+  font-family: Roboto Mono;
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
+}
+
 .app {}
 
 .frame {
@@ -36,4 +43,9 @@
 
 .empty {
   background-color: black;
+}
+
+.step {
+  float: left;
+  margin: 10px;
 }

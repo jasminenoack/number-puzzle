@@ -15,6 +15,17 @@ being shuffled and shuffles them in place.
 */
 
 export function fisherYates(array: number[][]): number[][] {
+    var rowLength = array[0].length;
+    var height = array.length;
+    if (height !== rowLength) {
+        throw new Error("Not square");
+    }
+    for (var i = 0; i < height; i++) {
+        if (array[i].length !== rowLength) {
+            throw new Error("Row lengths are not equal");
+        }
+    }
+
     var flatArray = array.flat();
 
     var newFlatArray = []
@@ -25,7 +36,7 @@ export function fisherYates(array: number[][]): number[][] {
     }
 
     var newMatrix = [];
-    var rowLength = 4;
+
     for (var i = 0; i < newFlatArray.length; i += rowLength) {
         newMatrix.push(newFlatArray.slice(i, i + rowLength));
     }

@@ -14,13 +14,45 @@ export const RIGHT = "right";
 
 export class PuzzleState {
     state: number[][];
-    constructor(puzzleState?: number[][]) {
-        this.state = puzzleState || fisherYates(PUZZLE_SOLVED);
+    size: number;
+    private solvedState: number[][];
+
+    constructor(puzzleState: number[][] | null = null, size: number | null = null
+    ) {
+        if (!puzzleState && !size) {
+            throw new Error("Either puzzle state or size must be provided");
+        } else if (puzzleState && size && (puzzleState.length !== size || puzzleState[0].length !== size)) {
+            throw new Error("Invalid puzzle state");
+        } else if (puzzleState && !size) {
+            size = puzzleState.length;
+        }
+        this.size = size!;
+
+        this.solvedState = this.generatePuzzleBySize(this.size);
+
+        this.state = puzzleState || fisherYates(this.solvedState);
     }
+
+    generatePuzzleBySize(size: number) {
+        var puzzleValues = []
+        for (let i = 0; i < size; i++) {
+            var row = [];
+            for (let j = 0; j < size; j++) {
+                if (i === size - 1 && j === size - 1) {
+                    row.push(0);
+                } else {
+                    row.push(i * size + j + 1);
+                }
+            }
+            puzzleValues.push(row);
+        }
+        return puzzleValues;
+    }
+
 
     solved() {
         // returns if in a solved state
-        return this.state.toString() === PUZZLE_SOLVED.toString();
+        return this.state.toString() === this.solvedState.toString();
     }
 
     actions() {
@@ -38,10 +70,10 @@ export class PuzzleState {
 
         var actions = [];
 
-        if (rowIndex !== 3) {
+        if (rowIndex !== this.size - 1) {
             actions.push(UP);
         }
-        if (colIndex !== 3) {
+        if (colIndex !== this.size - 1) {
             actions.push(LEFT);
         }
         if (colIndex !== 0) {
