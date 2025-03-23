@@ -69,3 +69,16 @@ p {
   background-color: #f0f0f0;
   padding: 10px;
 }
+
+td {
+  text-align: right;
+  padding: 10px;
+}
+
+tr.solved {
+  background-color: green;
+}
+
+tr.not-solved {
+  background-color: red;
+}

@@ -3,7 +3,7 @@ import Box from './Box';
 import { BOX_SIZE, BORDER_WIDTH } from '../constants';
 import { PuzzleState } from '../algo/puzzle/puzzle';
 
-function Frame({ puzzleState }: { puzzleState: PuzzleState }) {
+function Frame({ puzzleState, depth }: { puzzleState: PuzzleState, depth: number }) {
     const puzzle = puzzleState.state;
     const lastLocation = puzzleState.lastMoveTo;
     return (
@@ -20,7 +20,8 @@ function Frame({ puzzleState }: { puzzleState: PuzzleState }) {
                 }
 
             </div>
-            Score: {puzzleState.simplePuzzleScore()}
+            <div>Score: {puzzleState.simplePuzzleScore()}</div>
+            <div>Depth: {depth}</div>
         </div>
     );
 }

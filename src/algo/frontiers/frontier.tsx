@@ -107,7 +107,7 @@ export class Frontier {
             while (!this.solved) {
                 i++;
                 this.processNode();
-                if (i > 10000) {
+                if (i > 500) {
                     break;
                 }
             }
