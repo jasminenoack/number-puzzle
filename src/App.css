@@ -33,3 +33,7 @@
   line-height: calc(var(--box-height) - 10px);
   float: left;
 }
+
+.empty {
+  background-color: black;
+}

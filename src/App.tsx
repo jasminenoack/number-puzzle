@@ -1,18 +1,15 @@
 import React from 'react';
 import './App.css';
 import Frame from './elements/Frame';
+import { PuzzleState } from './algo/puzzle/puzzle';
 
-const NUMBERS = [
-  [1, 2, 3, 4],
-  [5, 6, 7, 8],
-  [9, 10, 11, 12],
-  [13, 14, 15],
-]
 
 function App() {
+  const startPuzzle = new PuzzleState();
+
   return (
     <div className="app">
-      <Frame puzzle={NUMBERS} />
+      <Frame puzzle={startPuzzle.state} />
     </div>
   );
 }
