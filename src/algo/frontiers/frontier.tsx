@@ -43,6 +43,7 @@ type Stats = {
     nodesThrownAway: number;
     bestScore: number;
     averageScore: number;
+    bestPathLength: number;
 }
 
 export class Frontier {
@@ -122,6 +123,7 @@ export class Frontier {
         var maxPathLength = 0;
         var bestScore = Infinity;
         var totalScore = 0;
+        var bestPathLength = Infinity;
         this.processed.forEach((node) => {
             if (node.depth > maxPathLength) {
                 maxPathLength = node.depth;
@@ -129,6 +131,7 @@ export class Frontier {
             const score = node.puzzleState.simplePuzzleScore();
             if (score < bestScore) {
                 bestScore = score;
+                bestPathLength = node.depth;
             }
             totalScore += score;
         })
@@ -141,7 +144,8 @@ export class Frontier {
             maxDepth: maxPathLength,
             nodesThrownAway: this.matchingNodeCount,
             bestScore: bestScore,
-            averageScore: totalScore / this.processed.length
+            averageScore: totalScore / this.processed.length,
+            bestPathLength: bestPathLength
         }
     }
 }

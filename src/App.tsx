@@ -22,7 +22,7 @@ function StartingPuzzle({ puzzle }: { puzzle: PuzzleState }) {
 
 function BreadthFirstSearch() {
   return (
-    <div>
+    <div className="search-section">
       <h2>Depth First Search</h2>
       <p>This is attempting to solve the problem using a depth first search.</p>
       <FrontierInfo frontier={stackFrontier} />
@@ -34,7 +34,7 @@ function FrontierInfo({ frontier }: { frontier: Frontier }) {
   return (
     <div>
       <Statistics frontier={stackFrontier} />
-      {/* <ProcessedNodes frontier={stackFrontier} /> */}
+      <ProcessedNodes frontier={stackFrontier} />
     </div>
   );
 }
@@ -53,21 +53,28 @@ function Statistics({ frontier }: { frontier: Frontier }) {
       <p>Nodes Thrown Away: {stats?.nodesThrownAway}</p>
       <p>Best Score: {stats?.bestScore}</p>
       <p>Average Score: {stats?.averageScore}</p>
+      <p>Best Path Length: {stats?.bestPathLength}</p>
     </div>
   );
 }
 
 function ProcessedNodes({ frontier }: { frontier: Frontier }) {
+  var [startingIndex, setStartingIndex] = React.useState(0);
+  const pageSize = 10;
+  const items = frontier.processed.slice(startingIndex, startingIndex + pageSize);
   return (
-    <div>
+    <div className="clearfix">
       <h2>Processed Nodes</h2>
-      {frontier.processed.map((node, index) => (
+      <div>{startingIndex + 1} to {startingIndex + 1 + pageSize} of {frontier.processed.length}</div>
+      {items.map((node, index) => (
         <div key={index}>
           <div className="step">
             <Frame puzzleState={node.puzzleState} />
           </div>
         </div>
       ))}
+      <button onClick={() => setStartingIndex(startingIndex - pageSize)} disabled={startingIndex === 0}>Previous</button>
+      <button onClick={() => setStartingIndex(startingIndex + pageSize)} disabled={startingIndex + 10 > frontier.processed.length}>Next</button>
     </div>
   );
 }
