@@ -1,4 +1,4 @@
-import { fisherYates } from "../shake";
+import { fisherYates } from "./shake";
 
 describe("shake", () => {
     it("should return a shuffled version of the matrix", () => {
