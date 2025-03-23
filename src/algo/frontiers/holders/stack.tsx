@@ -1,15 +1,14 @@
-import { PuzzleState } from '../../puzzle/puzzle';
 import { HolderInterface } from './interface';
 
 export class Stack implements HolderInterface {
-    items: PuzzleState[];
+    items: any[];
     constructor() {
         this.items = [];
     }
-    push(item: PuzzleState) {
+    push(item: any) {
         this.items.push(item);
     }
-    pop(): PuzzleState {
+    pop(): any {
         if (this.isEmpty()) {
             throw new Error("Stack is empty");
         }

@@ -1,9 +1,8 @@
-import { PuzzleState } from "../../puzzle/puzzle";
-
 export interface HolderInterface {
-    push(item: PuzzleState): void;
-    pop(): PuzzleState;
-    peek(): PuzzleState;
+    push(item: any): void;
+    pop(): any;
+    peek(): any;
     isEmpty(): boolean;
     size(): number;
+    items: any[];
 }
