@@ -198,7 +198,9 @@ describe("Frontier", () => {
                 nodesNotProcessed: 115,
                 pathLength: 157,
                 maxDepth: 157,
-                nodesThrownAway: 159
+                nodesThrownAway: 159,
+                bestScore: 0,
+                averageScore: 13.579617834394904
             });
         });
 

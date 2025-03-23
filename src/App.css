@@ -44,3 +44,7 @@ p {
   float: left;
   margin: 10px;
 }
+
+.lastLocation {
+  background: yellowgreen;
+}

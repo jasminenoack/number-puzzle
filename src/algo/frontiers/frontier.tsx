@@ -41,6 +41,8 @@ type Stats = {
     pathLength: number;
     maxDepth: number;
     nodesThrownAway: number;
+    bestScore: number;
+    averageScore: number;
 }
 
 export class Frontier {
@@ -104,7 +106,7 @@ export class Frontier {
             while (!this.solved) {
                 i++;
                 this.processNode();
-                if (i > 1000) {
+                if (i > 10000) {
                     break;
                 }
             }
@@ -118,10 +120,17 @@ export class Frontier {
         }
 
         var maxPathLength = 0;
+        var bestScore = Infinity;
+        var totalScore = 0;
         this.processed.forEach((node) => {
             if (node.depth > maxPathLength) {
                 maxPathLength = node.depth;
             }
+            const score = node.puzzleState.simplePuzzleScore();
+            if (score < bestScore) {
+                bestScore = score;
+            }
+            totalScore += score;
         })
 
         this.stats = {
@@ -130,7 +139,9 @@ export class Frontier {
             nodesNotProcessed: this.holder.size(),
             pathLength: this.solution ? this.solution.depth : 0,
             maxDepth: maxPathLength,
-            nodesThrownAway: this.matchingNodeCount
+            nodesThrownAway: this.matchingNodeCount,
+            bestScore: bestScore,
+            averageScore: totalScore / this.processed.length
         }
     }
 }
