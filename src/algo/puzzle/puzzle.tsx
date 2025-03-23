@@ -26,8 +26,11 @@ export class PuzzleState {
         } else if (puzzleState && !size) {
             size = puzzleState.length;
         }
-        this.size = size!;
 
+        this.size = size!;
+        if (this.size < 3) {
+            throw new Error("Size must be greater than 2");
+        }
         this.solvedState = this.generatePuzzleBySize(this.size);
 
         this.state = puzzleState || fisherYates(this.solvedState);
@@ -70,17 +73,17 @@ export class PuzzleState {
 
         var actions = [];
 
-        if (rowIndex !== this.size - 1) {
-            actions.push(UP);
-        }
-        if (colIndex !== this.size - 1) {
-            actions.push(LEFT);
-        }
         if (colIndex !== 0) {
             actions.push(RIGHT);
         }
         if (rowIndex !== 0) {
             actions.push(DOWN);
+        }
+        if (colIndex !== this.size - 1) {
+            actions.push(LEFT);
+        }
+        if (rowIndex !== this.size - 1) {
+            actions.push(UP);
         }
         return actions;
     }
@@ -98,6 +101,7 @@ export class PuzzleState {
     }
 
     move(action: string) {
+        console.log("Moving", action);
         // moves the tile in the given direction
         const zeroIndex = this.findZero();
         const rowIndex = zeroIndex[0];

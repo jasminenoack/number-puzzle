@@ -19,6 +19,10 @@ describe("PuzzleState", () => {
             expect(state.length).toEqual(3);
             expect(state[0].length).toEqual(3);
         });
+
+        it("errors smaller than 2", () => {
+            expect(() => new PuzzleState(null, 2)).toThrowError("Size must be greater than 2");
+        });
     });
 
     describe("generatePuzzleBySize", () => {
@@ -29,21 +33,12 @@ describe("PuzzleState", () => {
         });
 
         it("should generate a 3x3 puzzle", () => {
-            const puzzle = new PuzzleState(null, 4);
+            const puzzle = new PuzzleState(null, 3);
             const generated = puzzle.generatePuzzleBySize(3);
             expect(generated).toEqual([
                 [1, 2, 3],
                 [4, 5, 6],
                 [7, 8, 0]
-            ]);
-        });
-
-        it("should generate a 2x2 puzzle", () => {
-            const puzzle = new PuzzleState(null, 4);
-            const generated = puzzle.generatePuzzleBySize(2);
-            expect(generated).toEqual([
-                [1, 2],
-                [3, 0]
             ]);
         });
     }
@@ -81,7 +76,7 @@ describe("PuzzleState", () => {
                 [8, 9, 10, 11],
                 [12, 13, 14, 15]
             ]);
-            expect(puzzle.actions()).toEqual(["up", "left"]);
+            expect(puzzle.actions().sort()).toEqual(["left", "up"]);
         });
 
         it("0 in 0,1 should allow slide up & right & left", () => {
@@ -91,7 +86,7 @@ describe("PuzzleState", () => {
                 [8, 9, 10, 11],
                 [12, 13, 14, 15]
             ]);
-            expect(puzzle.actions()).toEqual(["up", "left", "right"]);
+            expect(puzzle.actions().sort()).toEqual(["left", "right", "up"]);
         });
 
         it("0 in 0,2 should allow slide up & right & left", () => {
@@ -101,7 +96,7 @@ describe("PuzzleState", () => {
                 [8, 9, 10, 11],
                 [12, 13, 14, 15]
             ]);
-            expect(puzzle.actions()).toEqual(["up", "left", "right"]);
+            expect(puzzle.actions().sort()).toEqual(["left", "right", "up"]);
         });
 
         it("0 in 0,3 should allow slide up & right", () => {
@@ -111,7 +106,7 @@ describe("PuzzleState", () => {
                 [8, 9, 10, 11],
                 [12, 13, 14, 15]
             ]);
-            expect(puzzle.actions()).toEqual(["up", "right"]);
+            expect(puzzle.actions().sort()).toEqual(["right", "up"]);
         });
 
         it("0 in 1,0 should allow slide up & left & down", () => {
@@ -121,7 +116,7 @@ describe("PuzzleState", () => {
                 [8, 9, 10, 11],
                 [12, 13, 14, 15]
             ]);
-            expect(puzzle.actions()).toEqual(["up", "left", "down"]);
+            expect(puzzle.actions().sort()).toEqual(["down", "left", "up"]);
         }
         );
 
@@ -132,7 +127,7 @@ describe("PuzzleState", () => {
                 [8, 9, 10, 11],
                 [12, 13, 14, 15]
             ]);
-            expect(puzzle.actions()).toEqual(["up", "left", "right", "down"]);
+            expect(puzzle.actions().sort()).toEqual(["down", "left", "right", "up"]);
         });
 
         it("0 in 1,2 should allow slide up & left & down & right", () => {
@@ -142,7 +137,7 @@ describe("PuzzleState", () => {
                 [8, 9, 10, 11],
                 [12, 13, 14, 15]
             ]);
-            expect(puzzle.actions()).toEqual(["up", "left", "right", "down"]);
+            expect(puzzle.actions().sort()).toEqual(["down", "left", "right", "up"]);
         });
 
         it("0 in 1,3 should allow slide up & right & down", () => {
@@ -152,7 +147,7 @@ describe("PuzzleState", () => {
                 [8, 9, 10, 11],
                 [12, 13, 14, 15]
             ]);
-            expect(puzzle.actions()).toEqual(["up", "right", "down"]);
+            expect(puzzle.actions().sort()).toEqual(["down", "right", "up"]);
         });
 
         it("0 in 2,0 should allow slide up & left & down", () => {
@@ -162,7 +157,7 @@ describe("PuzzleState", () => {
                 [0, 9, 10, 11],
                 [12, 13, 14, 15]
             ]);
-            expect(puzzle.actions()).toEqual(["up", "left", "down"]);
+            expect(puzzle.actions().sort()).toEqual(["down", "left", "up"]);
         });
 
         it("0 in 2,1 should allow slide up & left & down & right", () => {
@@ -172,7 +167,7 @@ describe("PuzzleState", () => {
                 [9, 0, 10, 11],
                 [12, 13, 14, 15]
             ]);
-            expect(puzzle.actions()).toEqual(["up", "left", "right", "down"]);
+            expect(puzzle.actions().sort()).toEqual(["down", "left", "right", "up"]);
         });
 
         it("0 in 2,2 should allow slide up & left & down & right", () => {
@@ -182,7 +177,7 @@ describe("PuzzleState", () => {
                 [9, 10, 0, 11],
                 [12, 13, 14, 15]
             ]);
-            expect(puzzle.actions()).toEqual(["up", "left", "right", "down"]);
+            expect(puzzle.actions().sort()).toEqual(["down", "left", "right", "up"]);
         });
 
         it("0 in 2,3 should allow slide up & right & down", () => {
@@ -192,7 +187,7 @@ describe("PuzzleState", () => {
                 [9, 10, 11, 0],
                 [12, 13, 14, 15]
             ]);
-            expect(puzzle.actions()).toEqual(["up", "right", "down"]);
+            expect(puzzle.actions().sort()).toEqual(["down", "right", "up"]);
         });
 
         it("0 in 3,0 should allow slide left & down", () => {
@@ -202,7 +197,7 @@ describe("PuzzleState", () => {
                 [9, 10, 11, 12],
                 [0, 13, 14, 15]
             ]);
-            expect(puzzle.actions()).toEqual(["left", "down"]);
+            expect(puzzle.actions().sort()).toEqual(["down", "left"]);
         });
 
         it("0 in 3,1 should allow slide left & right & down", () => {
@@ -212,7 +207,7 @@ describe("PuzzleState", () => {
                 [9, 10, 11, 12],
                 [13, 0, 14, 15]
             ]);
-            expect(puzzle.actions()).toEqual(["left", "right", "down"]);
+            expect(puzzle.actions().sort()).toEqual(["down", "left", "right"]);
         });
 
         it("0 in 3,2 should allow slide left & right & down", () => {
@@ -222,7 +217,7 @@ describe("PuzzleState", () => {
                 [9, 10, 11, 12],
                 [13, 14, 0, 15]
             ]);
-            expect(puzzle.actions()).toEqual(["left", "right", "down"]);
+            expect(puzzle.actions().sort()).toEqual(["down", "left", "right"]);
         });
 
         it("0 in 3,3 should allow slide right & down", () => {
@@ -232,7 +227,7 @@ describe("PuzzleState", () => {
                 [9, 10, 11, 12],
                 [13, 14, 15, 0]
             ]);
-            expect(puzzle.actions()).toEqual(["right", "down"]);
+            expect(puzzle.actions().sort()).toEqual(["down", "right"]);
         });
 
         it("knows actions for 3X3 in 0,0", () => {
@@ -241,7 +236,7 @@ describe("PuzzleState", () => {
                 [3, 4, 5],
                 [6, 7, 8]
             ], 3);
-            expect(puzzle.actions()).toEqual(["up", "left"]);
+            expect(puzzle.actions().sort()).toEqual(["left", "up"]);
         }
         );
 
@@ -251,7 +246,7 @@ describe("PuzzleState", () => {
                 [3, 4, 5],
                 [6, 7, 8]
             ], 3);
-            expect(puzzle.actions()).toEqual(["up", "right"]);
+            expect(puzzle.actions().sort()).toEqual(["right", "up"]);
         }
         );
 
@@ -261,7 +256,7 @@ describe("PuzzleState", () => {
                 [4, 5, 6],
                 [0, 7, 8]
             ], 3);
-            expect(puzzle.actions()).toEqual(["left", "down"]);
+            expect(puzzle.actions().sort()).toEqual(["down", "left"]);
         }
         );
 
@@ -271,7 +266,7 @@ describe("PuzzleState", () => {
                 [4, 5, 6],
                 [7, 8, 0]
             ], 3);
-            expect(puzzle.actions()).toEqual(["right", "down"]);
+            expect(puzzle.actions().sort()).toEqual(["down", "right"]);
         }
         );
 

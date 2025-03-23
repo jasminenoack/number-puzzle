@@ -96,13 +96,20 @@ export class Frontier {
     }
 
     public process() {
-        var i = 0;
-        while (!this.solved) {
-            i++;
-            this.processNode();
-            if (i > 100) {
-                break;
+        try {
+            var i = 0;
+            while (!this.solved) {
+                i++;
+                this.processNode();
+                if (i > 100) {
+                    break;
+                }
             }
+        } catch (e) {
+            console.log(e);
+        }
+        if (this.solution) {
+            console.log("Solution found", this.processNode.length);
         }
     }
 

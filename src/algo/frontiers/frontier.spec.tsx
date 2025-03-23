@@ -144,8 +144,15 @@ describe("Frontier", () => {
             expect(frontier.holder.size()).toEqual(2);
         })
         it("should set solved if it finds the solution", () => {
-            const puzzle = new PuzzleState(null, 2);
+            const puzzle = new PuzzleState(null, 3);
             var frontier = new Frontier(puzzle, new Stack());
+            // push in complete node
+            frontier.holder.push(new Node(new PuzzleState(
+                [
+                    [1, 2, 3],
+                    [4, 5, 6],
+                    [7, 8, 0]
+                ], 3), null, 1));
             frontier.processNode();
             expect(frontier.solved).toEqual(true);
         }
